@@ -64,6 +64,7 @@ def download_video(urldownloadvideo, folder_path):
         logging.info("Видео загружено.")
 
 
+
 async def get_last_new(url, count):
     logging.info(f'URL new: {url}')
     try:
