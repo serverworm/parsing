@@ -4,11 +4,28 @@ from random import randrange
 from lxml import html
 import logging
 import time
+from telethon import TelegramClient
+from telethon.tl.types import DocumentAttributeVideo
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
+
+api_id = 24293233
+api_hash = '7f8cad933aa6097fb83248a7cd8d2d8c'
+
+client = TelegramClient('my_session', api_id, api_hash,
+                        device_model="iPhone 13 Pro Max",
+                        system_version="14.8.1",
+                        app_version="8.4",
+                        lang_code="en",
+                        system_lang_code="en-US")
+
+try:
+    client.disconnect()
+except Exception as ex:
+    logging.error('ERROR in client.disconnect(): ', ex)
 
 def random_headers(rand):
     if rand == False:
@@ -22,6 +39,28 @@ def random_headers(rand):
                           f'(KHTML, like Gecko) Chrome/{randrange(0, 99)}.{randrange(0, 9)}.{randrange(0, 9999)}.{randrange(0, 999)} Safari/{randrange(0, 999)}.{randrange(0, 99)}'
         }
     return headers
+
+
+def download_video(urldownloadvideo, folder_path):
+    # Загрузка видео по ссылке
+    file_path = os.path.join('videos', f'{countlastvideo}.mp4')
+    if os.path.isfile(file_path):
+        logging.info(f"Файл {countlastvideo}.mp4 уже в папке videos")
+    else:
+        logging.info("Видео загружается...")
+        file_name = f'{countlastvideo}.mp4'
+        file_path = os.path.join(folder_path, file_name)
+        try:
+            response = requests.get(urldownloadvideo)
+        except Exception as ex:
+            logging.error('ERROR in response in download_video func: ', ex)
+        try:
+            with open(file_path, "wb") as file:
+                for chunk in response.iter_content(chunk_size=1024 * 1024):
+                    file.write(chunk)
+        except Exception as ex:
+            logging.error('ERROR during video upload: ', ex)
+        logging.info("Видео загружено.")
 
 
 async def get_last_new(url, count):
@@ -47,8 +86,25 @@ async def get_last_new(url, count):
     except Exception as ex:
         logging.error('ERROR IN caption_last_new: ', ex)
 
-    return count + 1
+    # download_video('https://www.1tv.ru/n/' + str(count), 'videonews')
+    try:
+        await client.start()
+    except Exception as ex:
+        logging.info('ERROR in client.start(): ', ex)
 
+    with open('videonews/file.mp4', 'rb') as f:
+        logging.info('Upload the news to the channel...')
+        await client.send_file(-1001852228260, file=f,
+                         caption=f'🆕 {header_last_new}\n\n{caption_last_new}',
+                         attributes=(DocumentAttributeVideo(0, 0, 0),), supports_streaming=True)
+        logging.info('News on the channel.')
+
+    try:
+        await client.disconnect()
+    except Exception as ex:
+        logging.error('ERROR in client.disconnect(): ', ex)
+
+    return count + 1
 
 async def main():
     count = 457264
@@ -59,5 +115,5 @@ async def main():
         time.sleep(50000)
 
 
-if __name__ == "__main__":
+if name == "main":
     asyncio.run(main())
