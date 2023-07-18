@@ -27,6 +27,7 @@ try:
 except Exception as ex:
     logging.error('ERROR in client.disconnect(): ', ex)
 
+
 def random_headers(rand):
     if rand == False:
         headers = {
@@ -95,8 +96,8 @@ async def get_last_new(url, count):
     with open('videonews/file.mp4', 'rb') as f:
         logging.info('Upload the news to the channel...')
         await client.send_file(-1001852228260, file=f,
-                         caption=f'🆕 {header_last_new}\n\n{caption_last_new}',
-                         attributes=(DocumentAttributeVideo(0, 0, 0),), supports_streaming=True)
+                               caption=f'🆕 {header_last_new}\n\n{caption_last_new}',
+                               attributes=(DocumentAttributeVideo(0, 0, 0),), supports_streaming=True)
         logging.info('News on the channel.')
 
     try:
@@ -105,6 +106,7 @@ async def get_last_new(url, count):
         logging.error('ERROR in client.disconnect(): ', ex)
 
     return count + 1
+
 
 async def main():
     count = 457264
@@ -115,5 +117,5 @@ async def main():
         time.sleep(50000)
 
 
-if name == "main":
+if __name__ == "main":
     asyncio.run(main())
