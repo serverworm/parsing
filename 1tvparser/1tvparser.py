@@ -1,3 +1,5 @@
+import sys
+
 import requests
 import asyncio
 from random import randrange
@@ -22,10 +24,10 @@ client = TelegramClient('my_session', api_id, api_hash,
                         lang_code="en",
                         system_lang_code="en-US")
 
-try:
-    client.disconnect()
-except Exception as ex:
-    logging.error('ERROR in client.disconnect(): ', ex)
+# try:
+#     client.disconnect()
+# except Exception as ex:
+#     logging.error('ERROR in client.disconnect(): ', ex)
 
 
 def random_headers(rand):
@@ -88,6 +90,9 @@ async def get_last_new(url, count):
     except Exception as ex:
         logging.error('ERROR IN caption_last_new: ', ex)
 
+    try:
+        href_on_downloading_video = second_tree.xpath('')
+
     # download_video('https://www.1tv.ru/n/' + str(count), 'videonews')
     try:
         await client.start()
@@ -109,14 +114,18 @@ async def get_last_new(url, count):
     return count + 1
 
 
+# https://v2-dtln.1internet.tv/video/multibitrate/video/2023/07/18/ccb7606f-cd88-48b5-ab8a-05b1335bcab2_HD-news-2023_07_18-13_16_30_,350,950,3800,.mp4.urlset/seg-3-f2-v1-a1.ts
+# https://v2-dtln.1internet.tv/video/multibitrate/video/2023/07/18/ccb7606f-cd88-48b5-ab8a-05b1335bcab2_HD-news-2023_07_18-13_16_30_,350,950,3800,.mp4.urlset/seg-2-f2-v1-a1.ts
+# https://v2-dtln.1internet.tv/video/multibitrate/video/2023/07/18/ccb7606f-cd88-48b5-ab8a-05b1335bcab2_HD-news-2023_07_18-13_16_30_,350,950,3800,.mp4.urlset/seg-1-f2-v1-a1.ts
+# https://v2-dtln.1internet.tv/video/multibitrate/video/2023/07/18/202535f7-4d0d-4bf2-96f1-44edff35eda8_HD-news-2023_07_18-13_18_58_,350,950,3800,.mp4.urlset/seg-1-f1-v1-a1.ts
 async def main():
-    count = 457264
-    url = 'https://www.1tv.ru/n/' + str(count)
+    count = 457339
     while True:
+        url = 'https://www.1tv.ru/n/' + str(count)
         await get_last_new(url, count)
         count += 1
-        time.sleep(50000)
+        time.sleep(5)
 
-
-if __name__ == "main":
+if __name__ == '__main__':
     asyncio.run(main())
+
