@@ -14,8 +14,8 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-api_id = 24293233
-api_hash = '7f8cad933aa6097fb83248a7cd8d2d8c'
+api_id = 
+api_hash = ''
 
 client = TelegramClient('my_session', api_id, api_hash,
                         device_model="iPhone 13 Pro Max",
