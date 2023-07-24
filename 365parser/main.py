@@ -8,13 +8,10 @@ from bs4 import BeautifulSoup
 from telethon import TelegramClient
 from random import randrange, choice
 from telethon.tl.types import DocumentAttributeVideo
-
-# get on https://my.telegram.org/auth
-api_id = 12064443
-api_hash = '608f11694b2ba722a53561faa7f3444f'
+from config import API_ID, API_HASH, countlastvideo, actual_url
 
 # device configurator for creating a session, DO NOT LOG IN TO YOUR ACCOUNT WITHOUT USING IT!
-client = TelegramClient('my_session', api_id, api_hash,
+client = TelegramClient('my_session', API_ID, API_HASH,
                         device_model="iPhone 13 Pro Max",
                         system_version="14.8.1",
                         app_version="8.4",
@@ -229,6 +226,4 @@ async def main(actual_url, countlastvideo, awit=None):
 
 
 if __name__ == "__main__":
-    countlastvideo = 36544
-    actual_url = "http://mob.porno365.bond/"
     asyncio.run(main(actual_url, countlastvideo))
